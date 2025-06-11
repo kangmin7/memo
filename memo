@@ -1,0 +1,34 @@
+0. ROS2
+https://www.theconstruct.ai/ubuntu-20-04-ros2-foxy-install-tutorial/
+
+1. WIFI MODULE
+sudo apt install git
+sudo apt install dkms
+sudo apt update
+sudo apt upgrade
+
+git clone https://github.com/cilynx/rtl88x2bu.git
+cd rtl88x2bu
+VER=$(sed -n 's/\PACKAGE_VERSION="\(.*\)"/\1/p' dkms.conf)
+sudo rsync -rvhP ./ /usr/src/rtl88x2bu-5.8.7.1
+sudo dkms add -m rtl88x2bu -v 5.8.7.1
+sudo dkms build -m rtl88x2bu -v 5.8.7.1
+sudo dkms install -m rtl88x2bu -v 5.8.7.1
+sudo modprobe 88x2bu
+
+
+2. Korean
+https://velog.io/@yun_in/Ubuntu-Ubuntu-20.04-%ED%95%9C%EA%B8%80-%EC%84%A4%EC%B9%98
+
+
+3. PX4
+git clone https://github.com/PX4/PX4-Autopilot.git --recursive
+bash ./PX4-Autopilot/Tools/setup/ubuntu.sh
+
+make px4_sitl gazebo-classic
+
+roslaunch mavros px4.launch fcu_url:="udp://:14540@127.0.0.1:14557"
+
+
+4. Camera
+rosrun usb_cam usb_cam_node _video_device:=/dev/video0 _pixel_format:=yuyv _io_method:=mmap _image_width:=640 _image_height:=480 _framerate:=30
